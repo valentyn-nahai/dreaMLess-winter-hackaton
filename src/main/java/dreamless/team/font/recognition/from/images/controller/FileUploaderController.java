@@ -23,14 +23,44 @@ import java.util.Random;
 public class FileUploaderController {
 
     @RequestMapping(value = "/prediction", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public PredictionResponse calculateFontPredictionFromImage(@RequestParam("file") MultipartFile file) {
+    public PredictionResponse calculateFontPredictionFromImage(@RequestParam(value = "fileName", required = false) MultipartFile file) {
         return new PredictionResponse()
                 .withData(new Data(Arrays.asList(
                         new Probability()
-                                .withFont("Arial")
-                                .withProbability(new Random(System.nanoTime()).nextDouble())
+                                .withFont(getRandomFont())
+                                .withProbability(((Math.random() * (1.0 - 0.8)) + 0.8))
                 )))
                 .withMessage("Test message")
                 .withStatus(Status.OK);
+    }
+
+    public String getRandomFont() {
+        String [] fonts = {
+                "Amatic",
+                "Arial",
+                "Calibri",
+                "Cambria",
+                "Cambriab",
+                "Caveat",
+                "Comfortaa",
+                "ComicSansMS",
+                "Consolas",
+                "CourierNew",
+                "DroidSans",
+                "DroidSerif",
+                "FreeSans",
+                "Lora",
+                "Merriweather",
+                "MonotypeCorsiva",
+                "Montserrat",
+                "Nunito",
+                "Roboto",
+                "TimesNewRoman",
+                "Ubuntu",
+                "UbuntuMono",
+                "Unicode"
+        };
+        int randomIndexNumber = new Random().nextInt(fonts.length);
+        return fonts[randomIndexNumber];
     }
 }
