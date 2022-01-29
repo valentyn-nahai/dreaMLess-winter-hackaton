@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
@@ -18,11 +19,11 @@ import java.util.Arrays;
 import java.util.Random;
 
 
-@Controller
+@RestController
 public class FileUploaderController {
 
     @RequestMapping(value = "/prediction", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public PredictionResponse calculatePredictionFromImage(@RequestParam("file") MultipartFile file) {
+    public PredictionResponse calculateFontPredictionFromImage(@RequestParam("file") MultipartFile file) {
         return new PredictionResponse()
                 .withData(new Data(Arrays.asList(
                         new Probability()
