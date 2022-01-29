@@ -1,4 +1,4 @@
-package dreamless.team.fontrecognishionfromimages;
+package dreamless.team.font.recognition.from.images;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
