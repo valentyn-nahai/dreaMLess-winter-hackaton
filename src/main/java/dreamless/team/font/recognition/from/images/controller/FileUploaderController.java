@@ -16,50 +16,59 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 
 @RestController
 public class FileUploaderController {
 
+    private String [] fonts = {
+            "Amatic",
+            "Arial",
+            "Calibri",
+            "Cambria",
+            "Cambriab",
+            "Caveat",
+            "Comfortaa",
+            "ComicSansMS",
+            "Consolas",
+            "CourierNew",
+            "DroidSans",
+            "DroidSerif",
+            "FreeSans",
+            "Lora",
+            "Merriweather",
+            "MonotypeCorsiva",
+            "Montserrat",
+            "Nunito",
+            "Roboto",
+            "TimesNewRoman",
+            "Ubuntu",
+            "UbuntuMono",
+            "Unicode"
+    };
+
     @RequestMapping(value = "/prediction", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public PredictionResponse calculateFontPredictionFromImage(@RequestParam(value = "fileName", required = false) MultipartFile file) {
         return new PredictionResponse()
-                .withData(new Data(Arrays.asList(
-                        new Probability()
-                                .withFont(getRandomFont())
-                                .withProbability(((Math.random() * (1.0 - 0.8)) + 0.8))
-                )))
+                .withData(new Data(getRandomArrayOfProbabilities(fonts)))
                 .withMessage("Test message")
                 .withStatus(Status.OK);
     }
 
-    public String getRandomFont() {
-        String [] fonts = {
-                "Amatic",
-                "Arial",
-                "Calibri",
-                "Cambria",
-                "Cambriab",
-                "Caveat",
-                "Comfortaa",
-                "ComicSansMS",
-                "Consolas",
-                "CourierNew",
-                "DroidSans",
-                "DroidSerif",
-                "FreeSans",
-                "Lora",
-                "Merriweather",
-                "MonotypeCorsiva",
-                "Montserrat",
-                "Nunito",
-                "Roboto",
-                "TimesNewRoman",
-                "Ubuntu",
-                "UbuntuMono",
-                "Unicode"
-        };
+    public List<Probability> getRandomArrayOfProbabilities(String[] fonts) {
+        return Stream.of(fonts)
+                .map(font -> new Probability()
+                                .withFont(getRandomFont(fonts))
+                                .withProbability(((Math.random() * (1.0 - 0.4)) + 0.4)))
+                .collect(Collectors.toList());
+    }
+
+    public String getRandomFont(String[] fonts) {
         int randomIndexNumber = new Random().nextInt(fonts.length);
         return fonts[randomIndexNumber];
     }
